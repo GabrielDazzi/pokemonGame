@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Batalha Pokémon</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .hp-bar {
+            width: 100%;
+            background-color: #ddd;
+            height: 20px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .hp-fill {
+            height: 100%;
+            background-color: #4caf50;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Batalha: {{ poke1.name }} vs {{ poke2.name }}</h2>
+
+    <div>
+        <p><strong>{{ poke1.name }}:</strong> {{ hp1 }} HP</p>
+        <div class="hp-bar">
+            <div class="hp-fill" style="width: {{ hp1_percent|default(0) }}%;"></div>
+        </div>
+
+        <p><strong>{{ poke2.name }}:</strong> {{ hp2 }} HP</p>
+        <div class="hp-bar">
+            <div class="hp-fill" style="width: {{ hp2_percent|default(0) }}%;"></div>
+        </div>
+    </div>
+
+    {% if last %}
+        <div class="log">
+            <p><em>{{ last.attacker }} usou {{ last.move }}!</em></p>
+            {% if last.damage > 0 %}
+                <p><em>Causou {{ last.damage }} de dano.</em></p>
+            {% endif %}
+            {% if last.heal %}
+                <p><em>Recuperou {{ last.heal }} de HP!</em></p>
+            {% endif %}
+            {% if last.effect %}
+                <p><em>{{ last.effect }}</em></p>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <h3>Turno de {{ attacker.name }}</h3>
+    <form method="post">
+        {% for move in moves %}
+            <button name="move" value="{{ move }}">{{ move }}</button>
+        {% endfor %}
+    </form>
+</body>
+</html>

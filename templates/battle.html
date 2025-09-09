@@ -1,58 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
+    <meta charset="UTF-8">
     <title>Batalha Pokémon</title>
-    <link rel="stylesheet" href="/static/style.css">
-    <style>
-        .hp-bar {
-            width: 100%;
-            background-color: #ddd;
-            height: 20px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-        }
-        .hp-fill {
-            height: 100%;
-            background-color: #4caf50;
-            border-radius: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h2>Batalha: {{ poke1.name }} vs {{ poke2.name }}</h2>
+    <div class="container battle-container">
+        <h2>Batalha: {{ battle.pokemon1.name }} vs {{ battle.pokemon2.name }}</h2>
 
-    <div>
-        <p><strong>{{ poke1.name }}:</strong> {{ hp1 }} HP</p>
-        <div class="hp-bar">
-            <div class="hp-fill" style="width: {{ hp1_percent|default(0) }}%;"></div>
+        <div class="battle-panels">
+            <div class="pokemon-panel">
+                <h3>{{ battle.pokemon1.name }} <span class="level">Lvl {{ battle.pokemon1.level }}</span></h3>
+                <div class="hp-bar-container">
+                    <div class="hp-bar" style="width: {{ battle.pokemon1.get_hp_percent() }}%;"></div>
+                </div>
+                <p>HP: {{ battle.pokemon1.current_hp }} / {{ battle.pokemon1.max_hp }}</p>
+            </div>
+            <div class="pokemon-panel">
+                <h3>{{ battle.pokemon2.name }} <span class="level">Lvl {{ battle.pokemon2.level }}</span></h3>
+                <div class="hp-bar-container">
+                    <div class="hp-bar" style="width: {{ battle.pokemon2.get_hp_percent() }}%;"></div>
+                </div>
+                <p>HP: {{ battle.pokemon2.current_hp }} / {{ battle.pokemon2.max_hp }}</p>
+            </div>
         </div>
 
-        <p><strong>{{ poke2.name }}:</strong> {{ hp2 }} HP</p>
-        <div class="hp-bar">
-            <div class="hp-fill" style="width: {{ hp2_percent|default(0) }}%;"></div>
-        </div>
-    </div>
-
-    {% if last %}
         <div class="log">
-            <p><em>{{ last.attacker }} usou {{ last.move }}!</em></p>
-            {% if last.damage > 0 %}
-                <p><em>Causou {{ last.damage }} de dano.</em></p>
-            {% endif %}
-            {% if last.heal %}
-                <p><em>Recuperou {{ last.heal }} de HP!</em></p>
-            {% endif %}
-            {% if last.effect %}
-                <p><em>{{ last.effect }}</em></p>
-            {% endif %}
+            {% for entry in battle.log|reverse %}
+                <p>{{ entry }}</p>
+            {% endfor %}
         </div>
-    {% endif %}
 
-    <h3>Turno de {{ attacker.name }}</h3>
-    <form method="post">
-        {% for move in moves %}
-            <button name="move" value="{{ move }}">{{ move }}</button>
-        {% endfor %}
-    </form>
+        <div class="turn-actions">
+            <h3>Turno de {{ battle.attacker.name }}! O que fazer?</h3>
+            <form method="post" class="moves-form">
+                {% for move in battle.attacker.moves %}
+                    <button name="move" value="{{ move.name }}">{{ move.name.capitalize() }}</button>
+                {% endfor %}
+            </form>
+        </div>
+        
+    </div>
 </body>
 </html>

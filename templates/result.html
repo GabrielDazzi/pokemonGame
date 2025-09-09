@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-    <link rel="stylesheet" href="/static/style.css">
-    <title>Resultado</title>
+    <meta charset="UTF-8">
+    <title>Resultado da Batalha</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>{{ winner }} venceu a batalha!</h1>
-    <a href="{{ url_for('index') }}">Jogar novamente</a>
+    <div class="container">
+        <h1>{{ winner }} venceu a batalha!</h1>
+        <a class="button" href="{{ url_for('new_game') }}">Jogar novamente</a>
+    </div>
 </body>
 </html>

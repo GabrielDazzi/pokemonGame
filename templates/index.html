@@ -1,18 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
+    <meta charset="UTF-8">
     <title>Escolha os Pokémon</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Configurar Batalha</h1>
-    <form method="post">
-        <label>Pokémon 1: <input name="poke1_name" required></label><br>
-        <label>Nível: <input type="number" name="poke1_level" min="1" max="100" required></label><br><br>
-        <label>Pokémon 2: <input name="poke2_name" required></label><br>
-        <label>Nível: <input type="number" name="poke2_level" min="1" max="100" required></label><br><br>
-        <button type="submit">Iniciar Batalha</button>
-    </form>
-    
+    <div class="container">
+        <h1>Configurar Batalha Pokémon</h1>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <form method="post">
+            <div class="pokemon-selector">
+                <h2>Jogador 1</h2>
+                <label for="poke1_name">Pokémon:</label>
+                <input id="poke1_name" name="poke1_name" value="pikachu" required>
+                <label for="poke1_level">Nível:</label>
+                <input id="poke1_level" type="number" name="poke1_level" min="1" max="100" value="50" required>
+            </div>
+            
+            <div class="pokemon-selector">
+                <h2>Jogador 2</h2>
+                <label for="poke2_name">Pokémon:</label>
+                <input id="poke2_name" name="poke2_name" value="charmander" required>
+                <label for="poke2_level">Nível:</label>
+                <input id="poke2_level" type="number" name="poke2_level" min="1" max="100" value="50" required>
+            </div>
+            
+            <button type="submit">Iniciar Batalha</button>
+        </form>
+    </div>
 </body>
 </html>
